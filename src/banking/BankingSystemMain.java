@@ -48,6 +48,7 @@ public class BankingSystemMain implements ICustomDefine {
     				handler.delete();
     				break;
     			case EXIT:
+    				handler.saveAccounts();
     				System.out.println("프로그램을 종료합니다.");
     				return;
     			}

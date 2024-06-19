@@ -1,5 +1,11 @@
 package banking;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -7,10 +13,11 @@ import java.util.Set;
 
 class AccountManager {
 	Set<Account> myAccount = new HashSet<>();
-    int numOfAccount;
+	int numOfAccount;
 
     public AccountManager(int num) {
         numOfAccount = 0;
+        loadAccounts();
     }
 
     public void makeAccount() {
@@ -202,4 +209,24 @@ class AccountManager {
         System.out.println("전체 계좌 정보가 출력되었습니다.");
     }
     
+	private void loadAccounts() {
+    	try (ObjectInputStream load = new ObjectInputStream(
+    			new FileInputStream("AccountInfo.obj"))) {
+    		myAccount = (Set<Account>) load.readObject();
+    		System.out.println("기존 계좌 정보를 불러왔습니다.");
+    	} catch (FileNotFoundException e) {
+    		System.out.println("저장된 계좌 정보가 없습니다.");
+    	} catch (IOException | ClassNotFoundException e) {
+    		e.printStackTrace();
+    	}
+    }
+    public void saveAccounts() {
+    	try (ObjectOutputStream save = new ObjectOutputStream(
+    			new FileOutputStream("AccountInfo.obj"))) {
+    		save.writeObject(myAccount);
+    		System.out.println("계좌 정보가 저장되었습니다.");
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
 }
