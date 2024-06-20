@@ -36,4 +36,5 @@ class HighCreditAccount extends Account {
         }
         this.money += nomalInterest + highInterest + deposit;
     }
+   
 }

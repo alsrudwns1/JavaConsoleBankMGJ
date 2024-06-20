@@ -20,4 +20,5 @@ class NormalAccount extends Account {
         int nomalInterest = (int)(this.money * (interest / 100.0));
         this.money += nomalInterest + deposit;
     }
+    
 }

@@ -6,5 +6,6 @@ public interface ICustomDefine {
 	int WITHDRAW = 3;
 	int INQUIRE = 4;
 	int DEL = 5; 
-	int EXIT = 6;
+	int AUTOSAVE = 6;
+	int EXIT = 7;
 	}

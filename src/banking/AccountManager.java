@@ -12,8 +12,9 @@ import java.util.Scanner;
 import java.util.Set;
 
 class AccountManager {
-	Set<Account> myAccount = new HashSet<>();
+	HashSet<Account> myAccount = new HashSet<Account>();
 	int numOfAccount;
+	private AutoSaver autoSaver;
 
     public AccountManager(int num) {
         numOfAccount = 0;
@@ -55,7 +56,7 @@ class AccountManager {
             System.out.print("덮어쓸까요? (Y or N): ");
             Scanner sc = new Scanner(System.in);
             String answer = sc.next();
-            if (answer.equals("Y")) {
+            if (answer.equalsIgnoreCase("Y")) {
                 myAccount.remove(nAccount); 
                 myAccount.add(nAccount);
                 System.out.println("덮어쓰기 완료되었습니다.");
@@ -212,7 +213,7 @@ class AccountManager {
 	private void loadAccounts() {
     	try (ObjectInputStream load = new ObjectInputStream(
     			new FileInputStream("AccountInfo.obj"))) {
-    		myAccount = (Set<Account>) load.readObject();
+    		myAccount = (HashSet<Account>) load.readObject();
     		System.out.println("기존 계좌 정보를 불러왔습니다.");
     	} catch (FileNotFoundException e) {
     		System.out.println("저장된 계좌 정보가 없습니다.");
@@ -229,4 +230,33 @@ class AccountManager {
     		e.printStackTrace();
     	}
     }
+    
+    public void AutoSaver() {
+        System.out.println("저장 옵션을 선택하세요:");
+        System.out.println("1. 자동저장 On");
+        System.out.println("2. 자동저장 Off");
+
+        Scanner scan = new Scanner(System.in);
+        int saveOption = scan.nextInt();
+        scan.nextLine();
+
+        if (saveOption == 1) {
+            if (autoSaver != null && autoSaver.isAlive()) {
+                System.out.println("이미 자동저장이 실행중입니다.");
+            } else {
+                autoSaver = new AutoSaver(this);
+                autoSaver.setDaemon(true);
+                autoSaver.start();
+                System.out.println("자동저장을 시작합니다.");
+            }
+        } else if (saveOption == 2) {
+            if (autoSaver != null && autoSaver.isAlive()) {
+                autoSaver.interrupt();
+                System.out.println("자동저장을 중지합니다.");
+            } else {
+                System.out.println("자동저장이 실행중이지 않습니다.");
+            }
+        }
+    }
+    
 }

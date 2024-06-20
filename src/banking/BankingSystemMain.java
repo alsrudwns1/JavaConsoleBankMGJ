@@ -15,7 +15,8 @@ public class BankingSystemMain implements ICustomDefine {
         System.out.println("3. 출금");
         System.out.println("4. 전체 계좌정보 출력");
         System.out.println("5. 계좌정보 삭제");
-        System.out.println("6. 프로그램 종료");
+        System.out.println("6. 저장 옵션");
+        System.out.println("7. 프로그램 종료");
         System.out.println("메뉴 선택");
     }
 
@@ -28,7 +29,7 @@ public class BankingSystemMain implements ICustomDefine {
 
     		try {
     			int choice = scan.nextInt();
-    			if (choice < 1 || choice > 6) {
+    			if (choice < 1 || choice > 7) {
     				throw new MenuSelectException("지정된 숫자를 입력해주세요");
     			}
     			switch (choice) {
@@ -46,6 +47,9 @@ public class BankingSystemMain implements ICustomDefine {
     				break;
     			case DEL:
     				handler.delete();
+    				break;
+    			case AUTOSAVE:
+    				handler.AutoSaver();
     				break;
     			case EXIT:
     				handler.saveAccounts();

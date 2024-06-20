@@ -33,6 +33,6 @@ abstract class Account implements Serializable {
         return Objects.hash(num);
     }
     
-    //override용
     public void depositMoney(int deposit) {}
+    
 }
