@@ -1,44 +1,47 @@
 package banking;
 
-import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class AutoSaver extends Thread {
-	private AccountManager accountManager;
-	private Account account;
-    private boolean running = true;
-    
+    private AccountManager accountManager;
+    private volatile boolean running = true;
+
     public AutoSaver(AccountManager accountManager) {
         this.accountManager = accountManager;
+    }
+
+    public void stopAutoSaver() {
+        running = false;
+        this.interrupt();
     }
 
     @Override
     public void run() {
         while (running) {
-            try {
-                saveAccountInfo();
-                Thread.sleep(5000);
-                System.out.println("자동저장중...");
-            } catch (InterruptedException e) {
-                System.out.println("자동저장이 중지되었습니다.");
-                running = false; 
+            try (FileWriter writer = new FileWriter("AutoSaveAccount.txt")) {
+                for (Account account : accountManager.myAccount) {
+                    if (account instanceof NormalAccount) {
+                        NormalAccount nAccount = (NormalAccount) account;
+                        writer.write("=보통계좌=" + "\n" + "계좌번호: " + nAccount.num + ", 이름: " + nAccount.name +
+                                ", 잔액: " + nAccount.money + ", 이자율: " + nAccount.interest + "\n");
+                    } else if (account instanceof HighCreditAccount) {
+                        HighCreditAccount hAccount = (HighCreditAccount) account;
+                        writer.write("=신용계좌=" + "\n" +"계좌번호: " + hAccount.num + ", 이름: " + hAccount.name +
+                                ", 잔액: " + hAccount.money + ", 이자율: " + hAccount.interest +
+                                ", 신용: " + hAccount.rank + "\n");
+                    }
+                }
+                writer.flush();
+                Thread.sleep(3000);
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (InterruptedException e) {
+                if (!running) {
+                    System.out.println("AutoSaver interrupted and stopping.");
+                    break;
+                }
             }
         }
-    }
-
-    public void saveAccountInfo() throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter("AutoSaveAccount.txt", true));
-        writer.write("자동저장 중입니다");
-        writer.newLine();
-        writer.close();
-    }
-
-    @Override
-    public void interrupt() {
-        running = false;
-        super.interrupt();
     }
 }
