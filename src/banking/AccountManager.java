@@ -214,7 +214,7 @@ class AccountManager {
     	try (ObjectInputStream load = new ObjectInputStream(
     			new FileInputStream("AccountInfo.obj"))) {
     		myAccount = (HashSet<Account>) load.readObject();
-    		System.out.println("계좌정보를 불러왔습니다");
+    		System.out.println("계좌정보를 불러왔습니다.");
     	} catch (FileNotFoundException e) {
     		System.out.println("저장된 계좌 정보가 없습니다.");
     	} catch (IOException | ClassNotFoundException e) {

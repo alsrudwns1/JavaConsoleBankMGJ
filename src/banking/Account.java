@@ -15,9 +15,9 @@ abstract class Account implements Serializable {
     }
 
     public void showAccInfo() {
-        System.out.println("계좌번호: " + num);
-        System.out.println("이름: " + name);
-        System.out.println("잔액: " + money);
+        System.out.println("계좌번호 : " + num);
+        System.out.println("이름 : " + name);
+        System.out.println("잔액 : " + money);
     }
     
     @Override

@@ -9,10 +9,10 @@ class NormalAccount extends Account {
     }
 
     public void showNaccInfo() {
-        System.out.println("계좌번호: " + num);
-        System.out.println("이름: " + name);
-        System.out.println("잔액: " + money);
-        System.out.println("기본이자: " + interest);
+        System.out.println("계좌번호 : " + num);
+        System.out.println("이름 : " + name);
+        System.out.println("잔액 : " + money);
+        System.out.println("기본이자 : " + interest);
     }
     
     @Override
